@@ -10,8 +10,7 @@ const listingSchema = new Schema({
     type: String,
   },
   image: {
-    type: String,
-    set: (v) => (v === "" ? "default image" : v),
+    type: JSON,
   },
   price: Number,
   location: String,

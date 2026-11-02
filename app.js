@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 require("dotenv").config();
 const path = require("path");
+const methodOverride = require("method-override");
 
 main()
   .then((res) => {
@@ -15,12 +16,13 @@ async function main() {
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 //listing route
-app.get("/", async (req, res) => {
+app.get("/listings", async (req, res) => {
   const allListings = await Listing.find();
   res.render("listings/index.ejs", { allListings });
 });
@@ -42,7 +44,28 @@ app.post("/listings/new", async (req, res) => {
   const listing = req.body.listing;
   const newlisting = new Listing(listing);
   await newlisting.save();
-  res.redirect("/");
+  res.redirect("/listings");
+});
+
+//Edit route
+app.get("/listings/:id/edit", async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/edit.ejs", { listing });
+});
+
+//Update route
+app.put("/listings/:id", async (req, res) => {
+  const { id } = req.params;
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  res.redirect(`/listings/${id}`);
+});
+
+//Delete route
+app.delete("/listings/:id", async (req, res) => {
+  const { id } = req.params;
+  const deletedListing = await Listing.findByIdAndDelete(id);
+  res.redirect("/listings");
 });
 
 app.listen(process.env.PORT, () => {

@@ -4,6 +4,7 @@ const Listing = require("./models/listing.js");
 require("dotenv").config();
 const path = require("path");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 main()
   .then((res) => {
@@ -20,6 +21,13 @@ app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "public")));
+
+//Home route
+app.get("/", (req, res) => {
+  res.send("welcome to home page");
+});
 
 //listing route
 app.get("/listings", async (req, res) => {

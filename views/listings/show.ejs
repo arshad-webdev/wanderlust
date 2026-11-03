@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wanderlust</title>
-  </head>
-  <body>
-    <h3>Details</h3>
-    <ul>
-      <li><%=detail.title %></li>
-      <li><%=detail.description %></li>
-      <li>&#8377;<%=detail.price.toLocaleString('en-IN') %></li>
-      <li><%=detail.location %></li>
-      <li><%=detail.country %></li>
-    </ul>
-    <br />
-    <a href="/listings/<%=detail._id%>/edit">Edit</a>
-    <br />
-    <br />
-    <form action="/listings/<%= detail._id%>?_method=DELETE" method="post">
-      <button>delete</button>
-    </form>
-  </body>
-</html>
+<% layout('/layouts/boilerplate.ejs') -%>
+<body>
+  <h3>Details</h3>
+  <ul>
+    <li><%=detail.title %></li>
+    <li><%=detail.description %></li>
+    <li>&#8377;<%=detail.price.toLocaleString('en-IN') %></li>
+    <li><%=detail.location %></li>
+    <li><%=detail.country %></li>
+  </ul>
+  <br />
+  <a href="/listings/<%=detail._id%>/edit">Edit</a>
+  <br />
+  <br />
+  <form action="/listings/<%= detail._id%>?_method=DELETE" method="post">
+    <button>delete</button>
+  </form>
+</body>
